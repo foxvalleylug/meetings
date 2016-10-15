@@ -103,8 +103,8 @@ The ``minion_opts`` are options that will be set on the remote host that will be
 
 Configs can be found in the [salt](https://github.com/foxvalleylug/meetings/tree/master/2016/10/salt) subdirectory. There are two subdirectories here:
 
-1. [sls](https://github.com/foxvalleylug/meetings/tree/master/2016/10/salt/sls) - contains all of the files needed to deploy Mattermost
-2. [pillar](https://github.com/foxvalleylug/meetings/tree/master/2016/10/salt/pillar) - contains user-defined variables
+1. [sls](https://github.com/foxvalleylug/meetings/tree/master/2016/10/salt/sls) - contains the Salt configuration needed to deploy Mattermost
+2. [pillar](https://github.com/foxvalleylug/meetings/tree/master/2016/10/salt/pillar) - contains user-defined variables used in the SLS files
 
 The files in the ``sls`` subdir should be copied to ``/srv/salt``, and the files in the ``pillar`` subdir should be copied to ``/srv/pillar``. These are the default locations for these files.
 
@@ -165,8 +165,15 @@ To kick off the orchestration, we just need to run:
 # salt-run state.orchestrate mattermost.ssl
 ```
 
+### Things I still plan on trying to set up
+
+1. Email notifications (need an authenticated SMTP account or permission from Vultr to relay email from my VPS)
+2. Cron job to automatically update the Let's Encrypt key
+3. Push notifications (preferably encrypted using a custom-compiled mobile app)
+
 ### Deployment notes
 
 - When upgrading, make sure to check config.json to make sure that the ``SqlSettings`` section hasn't changed. The [file.serialize](https://github.com/foxvalleylug/meetings/blob/master/2016/10/salt/sls/mattermost/deploy/server.sls#L54-L71) state will replace the entire ``SqlSettings`` section, so we need to specify all settings in that section.
 - We can't use ``file.managed`` to manage config.json, because Mattermost alters that file, writing configuration created while Mattermost is running to it. So we don't want to stomp on those changes. That is the reason for using [file.serialize](https://github.com/foxvalleylug/meetings/blob/master/2016/10/salt/sls/mattermost/deploy/server.sls#L54-L71). This will usually result in a big diff showing in the results when applying changes, because the order in which the json values are dumped by python is different from however Mattermost writes the file.
-- There is a bug in the nginx package for CentOS 7, it specifies a different path for the service's PID file than is specified in the nginx config file. Therefore, we have to deploy an [overridden unit file for nginx](https://github.com/foxvalleylug/meetings/blob/master/2016/10/salt/sls/mattermost/deploy/nginx-base.sls#L8-L18).
+- There is a bug in the nginx package for CentOS 7, it specifies a different path for the service's PID file than is specified in the nginx config file. Therefore, we have to deploy an [modified unit file for nginx](https://github.com/foxvalleylug/meetings/blob/master/2016/10/salt/sls/mattermost/deploy/nginx-base.sls#L8-L18).
+- During the live demo at the meeting, the orchestration run failed because the ``source_hash`` we defined in the pillar data (see [here](https://github.com/foxvalleylug/meetings/blob/master/2016/10/salt/pillar/mattermost.sls#L27)) for the certbot was no longer valid. The certbot tool had apparently been updated in the 2-3 days between when I set this up and when I ran the demo. Keep an eye on this if you use this example configuration to deploy, as the hash I have in the example Pillar data is likely to become outdated.

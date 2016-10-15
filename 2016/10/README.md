@@ -12,7 +12,7 @@
 
 - Missing some features (e.g. link expansion)
 - Push notifications for messages are not encrypted by default
-  - Mattermost provides encrypted push notifications to enterprise customers (current price is [$20/year per user](https://about.mattermost.com/pricing/).
+  - Mattermost provides encrypted push notifications to enterprise customers (current price is [$20/year per user](https://about.mattermost.com/pricing/)).
   - A do-it-yourself alternative for encrypted push notifications
     - Generate your own push notification keys
     - Manually compile the smartphone app (which is open-source)
@@ -43,23 +43,23 @@ The walkthrough for installing Mattermost on a CentOS 7 server can be found [her
 
 #### System Packages
 
-There are packages for salt-ssh available for several platforms at [repo.saltstack.com](https://repo.saltstack.com)
+There are packages for salt-ssh available for several platforms at [repo.saltstack.com](https://repo.saltstack.com).
 
 #### Using pip
 
 As salt-ssh is a standalone tool that requires no daemon on the master nor the minion, you can do a simple ``pip install``.
 
 ```
-# pip install salt
+# pip install salt-ssh
 ```
 
 When I install from pip, I prefer to do so in a virtualenv so that I am not installing via pip to a location where system packages might also get installed:
 
 ```
-# mkdir -p ~/venv/salt
+# mkdir ~/venv
 # virtualenv ~/venv/salt
 # source ~/venv/salt/bin/activate
-# pip install salt
+# pip install salt-ssh
 ```
 
 Note: for distros like Arch Linux in which ``python`` refers to Python 3, you may need to use ``virtualenv2`` to create the virtualenv using Python2.
@@ -88,8 +88,11 @@ mattermost.foxvalleylug.org:
     postgres.host: localhost
     postgres.port: 5432
     postgres.user: postgres
-    postgres.pass: postgres_user_passwd_goes_here
+    postgres.pass: postgres_user_pass_goes_here
     postgres.bins_dir: /usr/pgsql-9.4/bin
+    postgres.mm_database_name: mattermost
+    postgres.mm_database_user: mmuser
+    postgres.mm_database_pass: mattermost_user_pass_goes_here
 ```
 
 The roster should be saved to ``/etc/salt/roster``.

@@ -161,3 +161,9 @@ To kick off the orchestration, we just need to run:
 ```
 # salt-run state.orchestrate mattermost.ssl
 ```
+
+### Deployment notes
+
+- When upgrading, make sure to check config.json to make sure that the ``SqlSettings`` section hasn't changed. The [file.serialize](https://github.com/foxvalleylug/meetings/blob/master/2016/10/salt/sls/mattermost/deploy/server.sls#L54-L71) state will replace the entire ``SqlSettings`` section, so we need to specify all settings in that section.
+- We can't use ``file.managed`` to manage config.json, because Mattermost alters that file, writing configuration created while Mattermost is running to it. So we don't want to stomp on those changes. That is the reason for using [file.serialize](https://github.com/foxvalleylug/meetings/blob/master/2016/10/salt/sls/mattermost/deploy/server.sls#L54-L71). This will usually result in a big diff showing in the results when applying changes, because the order in which the json values are dumped by python is different from however Mattermost writes the file.
+- There is a bug in the nginx package for CentOS 7, it specifies a different path for the service's PID file than is specified in the nginx config file. Therefore, we have to deploy an [overridden unit file for nginx](https://github.com/foxvalleylug/meetings/blob/master/2016/10/salt/sls/mattermost/deploy/nginx-base.sls#L8-L18).

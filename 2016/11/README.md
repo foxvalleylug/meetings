@@ -1,6 +1,6 @@
 # November 2016 - General Discussion
 
-## Topicsp
+## Topics
 
 Chris and I (Tom Purl) were the only ones at the meeting this week so
 we had a very informal dicussion about lots of things that were

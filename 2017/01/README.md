@@ -250,7 +250,7 @@ So, what is a fast-forward? We'll come to that in a moment. First, it will help 
 A <--- B <--- C <--- E <--- G  master
 ```
 
-In this example, ``otherbranch`` was merged at ``C``, and both ``master`` and ``otherbranch`` continued to have changes made to them. The head of the ``master`` branch is now at ``G``, while the head of ``otherbranch`` is at ``H``.
+In this example, ``otherbranch`` was branched from ``master`` at ``C``, and both ``master`` and ``otherbranch`` continued to have changes made to them. The head of the ``master`` branch is now at ``G``, while the head of ``otherbranch`` is at ``H``.
 
 To perform the merge, Git will look back and find a common ancestor between ``G`` and ``H`` (in this case the branching point, ``C``). Then, it will find all of the commits on ``otherbranch`` that come after that ancestor (i.e. ``D``, ``F``, ``H``), and apply them one-by-one on top of ``G``.
 

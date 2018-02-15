@@ -1,4 +1,4 @@
-# October 2016 - Git
+# January 2017 - Git
 
 ## What is Git?
 
@@ -285,7 +285,7 @@ At this point, ``master`` and ``otherbranch`` will both point to the same commit
 It should be noted that it is possible to force Git to create a merge commit even when the merge is a fast-forward. This is done by adding ``--no-ff`` to the ``git merge`` command:
 
 ```bash
-$ git merge otherbranch
+$ git merge --no-ff otherbranch
 ```
 
 If this were done on the fast-forward example below, the result would look like this:

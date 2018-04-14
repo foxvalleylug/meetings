@@ -449,6 +449,7 @@ When I use worktrees, I like to organize them in the same parent directory as th
 
 ```bash
 $ mkdir -p ~/git/projectname
+$ cd ~/git/projectname
 $ git clone <REPO_URL> main
 ```
 
